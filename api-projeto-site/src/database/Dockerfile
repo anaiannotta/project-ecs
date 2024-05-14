@@ -2,6 +2,6 @@ FROM mysql:latest
 
 COPY sql.sql /docker-entrypoint-initdb.d/
 
-EXPOSE 3307
+EXPOSE 3306
 
 VOLUME [ "/backup/" ]

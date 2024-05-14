@@ -4,10 +4,10 @@ require('dotenv').config();
 
 // CONEXÃO DO SQL SERVER - AZURE (NUVEM)
 var sqlServerConfig = {
-    user: "XXXXX",
-    password: "XXXXX",  
-    database: "XXXXX",
-    server: "XXXXX",
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    server: process.env.DB_HOST,
     pool: {
         max: 10,
         min: 0,
