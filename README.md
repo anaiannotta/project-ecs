@@ -10,7 +10,6 @@
 sudo docker network create nutri-network
 
 sudo docker build -t nutri-mysql .
-sudo docker run -d --rm -p 3306:3306 --name nutri-mysql-container --network nutri-network -e MYSQL_ALLOW_EMPTY_PASSWORD=True nutri-mysql
 sudo docker run -d --rm -p 3307:3306 --name nutri-mysql-container --network nutri-network -e MYSQL_ROOT_PASSWORD=password nutri-mysql
 sudo docker exec -it nutri-mysql-container /bin/bash
 

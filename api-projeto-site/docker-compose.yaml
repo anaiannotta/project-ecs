@@ -1,0 +1,26 @@
+version: '3.3'
+
+services:
+  db:
+    image: nutri-mysql
+    container_name: nutri-mysql
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - "3307:3306"
+    networks:
+      - nutri-network
+
+  api:
+    depends_on:
+      - db
+    image: nutri-api
+    ports:
+      - "3333:3333"
+    restart: always
+    networks:
+      - nutri-network
+
+networks:
+  nutri-network:
