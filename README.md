@@ -16,4 +16,5 @@ sudo docker exec -it nutri-mysql-container /bin/bash
 sudo docker build -t nutri-api .
 sudo docker run -d --rm -p 3333:3333 --name nutri-api-container --network nutri-network nutri-api 
 
-
+sudo docker-compose up -d
+sudo docker-compose down
