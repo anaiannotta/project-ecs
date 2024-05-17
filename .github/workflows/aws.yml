@@ -26,7 +26,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Log in to Amazon ECR
         id: ecr-login
@@ -38,7 +38,7 @@ jobs:
           IMAGE_TAG=latest
           IMAGE_NAME=${{ matrix.image }}
           ECR_REPOSITORY=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ matrix.image }}
-          docker build -t $IMAGE_NAME:$IMAGE_TAG ./${{ matrix.image }}
+          docker build -t $IMAGE_NAME:$IMAGE_TAG ./${{matrix.path}{ matrix.image }}
           docker tag $IMAGE_NAME:$IMAGE_TAG $ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Push Docker image to ECR
