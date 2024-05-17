@@ -1,0 +1,51 @@
+name: Build and Deploy Docker Images to ECR and ECS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image: ['nutri-mysql', 'nutri-api']  # Lista de imagens que você deseja buildar
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Log in to Amazon ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build Docker image
+        run: |
+          IMAGE_TAG=latest
+          IMAGE_NAME=${{ matrix.image }}
+          ECR_REPOSITORY=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ matrix.image }}
+          docker build -t $IMAGE_NAME:$IMAGE_TAG ./${{ matrix.image }}
+          docker tag $IMAGE_NAME:$IMAGE_TAG $ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Push Docker image to ECR
+        run: |
+          IMAGE_TAG=latest
+          ECR_REPOSITORY=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ matrix.image }}
+          docker push $ECR_REPOSITORY:$IMAGE_TAG
+
+    #  - name: Update ECS service
+    #    run: |
+    #      ECS_CLUSTER_NAME=${{ secrets.ECS_CLUSTER_NAME }}
+    #      ECS_SERVICE_NAME=${{ secrets.ECS_SERVICE_NAME }}-${{ matrix.image }}
+    #      IMAGE_URI=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ matrix.image }}:latest
+    #
+    #      aws ecs update-service --cluster $ECS_CLUSTER_NAME --service $ECS_SERVICE_NAME --force-new-deployment --region ${{ secrets.AWS_REGION }}
+
