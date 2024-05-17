@@ -11,8 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        image: ['nutri-mysql', 'nutri-api']  # Lista de imagens que você deseja buildar
+        image: ['nutri-mysql']  # Lista de imagens que você deseja buildar
+        path: ["./api-projeto-site/"]
 
+        include:
+          - image: nutri-api
+            path: ./api-projeto-site/src/database
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -29,6 +33,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build Docker image
+        working-directory: ${{ matrix.path }}
         run: |
           IMAGE_TAG=latest
           IMAGE_NAME=${{ matrix.image }}
