@@ -11,9 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        image: [nutri-api, nutri-mysql]  # Lista de imagens que você deseja buildar
-        path: [./api-projeto-site, ./api-projeto-site/src/database]
-
+        image: [nutri-api]  # Lista de imagens que você deseja buildar
+        path: [./api-projeto-site ]
+        include:
+          - image: nutri-mysql
+          - path: ./api-projeto-site/src/database
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
