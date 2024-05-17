@@ -15,7 +15,7 @@ jobs:
         path: [./api-projeto-site ]
         include:
           - image: nutri-mysql
-          - path: ./api-projeto-site/src/database
+            path: ./api-projeto-site/src/database
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
