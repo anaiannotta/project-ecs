@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        image: ['nutri-api']  # Lista de imagens que você deseja buildar
-        path: ["./api-projeto-site/"]
+        image: [ nutri-api ]  # Lista de imagens que você deseja buildar
+        path: [ ./api-projeto-site/ ]
 
         include:
           - image: nutri-mysql
@@ -38,7 +38,7 @@ jobs:
           IMAGE_TAG=latest
           IMAGE_NAME=${{ matrix.image }}
           ECR_REPOSITORY=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ matrix.image }}
-          docker build -t $IMAGE_NAME:$IMAGE_TAG ./${{matrix.path}{ matrix.image }}
+          docker build -t $IMAGE_NAME:$IMAGE_TAG ./${{ matrix.path }{ matrix.image }}
           docker tag $IMAGE_NAME:$IMAGE_TAG $ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Push Docker image to ECR
